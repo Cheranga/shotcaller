@@ -7,10 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AsyncFixer"/>
-        <PackageReference Include="Meziantou.Analyzer"/>
-        <PackageReference Include="Roslynator.Analyzers"/>
-        <PackageReference Include="SonarAnalyzer.CSharp"/>
+        <PackageReference Include="AsyncFixer" PrivateAssets="all"/>
+        <PackageReference Include="Meziantou.Analyzer" PrivateAssets="all"/>
+        <PackageReference Include="Roslynator.Analyzers" PrivateAssets="all"/>
+        <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all"/>
         <PackageReference Include="Azure.Messaging.ServiceBus"/>
         <PackageReference Include="Microsoft.Extensions.Azure" />
     </ItemGroup>
