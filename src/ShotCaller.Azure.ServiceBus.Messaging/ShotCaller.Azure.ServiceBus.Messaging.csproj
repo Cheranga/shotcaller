@@ -6,4 +6,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="AsyncFixer"/>
+        <PackageReference Include="Meziantou.Analyzer"/>
+        <PackageReference Include="Roslynator.Analyzers"/>
+        <PackageReference Include="SonarAnalyzer.CSharp"/>
+        <PackageReference Include="Azure.Messaging.ServiceBus"/>
+        <PackageReference Include="Microsoft.Extensions.Azure" />
+    </ItemGroup>
+
 </Project>
