@@ -1,0 +1,39 @@
+{
+   "$schema": "https://alirezanet.github.io/Husky.Net/schema.json",
+   "tasks": [
+      {
+         "name": "Run CSharpier",
+         "group": "pre-commit",
+         "command": "dotnet",
+         "args": [
+            "csharpier",
+            "."
+         ]
+      },
+      {
+         "name": "Verify Code Formatting",
+         "group": "lint",
+         "command": "dotnet",
+         "args": [
+            "csharpier",
+            ".",
+            "--check"
+         ]
+      },
+      {
+         "name": "Conventional Commit Linter",
+         "command": "bash",
+         "group": "commit-msg",
+         "args": [
+            ".husky/commit-msg.sh",
+            "${args}"
+         ]
+      },
+      {
+         "name": "Conventional Commit Linter C#",
+         "command": "dotnet",
+         "group": "commit-msg",
+         "args": ["husky", "exec", ".husky/csx/conventionalcommit.csx", "--args", "${args}"]
+      }
+   ]
+}
