@@ -2,10 +2,11 @@
 concurrency: ci-shotcaller
 
 on:
-  pull_request:
+  push: 
     paths:
       - src
-  
+      - .github
+
 jobs: 
   checklist:
     name: checklist
