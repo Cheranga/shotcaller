@@ -25,4 +25,10 @@
         <PackageReference Include="Microsoft.Extensions.Azure"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>ShotCaller.Azure.ServiceBus.Messaging.Tests</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+
 </Project>

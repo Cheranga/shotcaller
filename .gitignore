@@ -6,3 +6,4 @@ riderModule.iml
 
 # RIDER settings
 .idea/
+*.sln.DotSettings.user
