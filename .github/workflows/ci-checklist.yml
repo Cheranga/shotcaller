@@ -9,7 +9,7 @@ on:
         description: Path to the csproj file
         
 permissions: 
-    contents: read
+  contents: read
 
 jobs:
   ci_validations:
