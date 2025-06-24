@@ -9,6 +9,7 @@
         <Authors>Cheranga Hatangala</Authors>
         <PackageProjectUrl>https://github.com/Cheranga/shotcaller</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Cheranga/shotcaller</RepositoryUrl>
+        <Version>0.0.1</Version>
     </PropertyGroup>
 
     <ItemGroup>

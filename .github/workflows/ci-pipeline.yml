@@ -1,0 +1,17 @@
+﻿name: ci-shotcaller
+concurrency: ci-shotcaller
+
+on:
+  pull_request:
+    paths:
+      - src
+  
+jobs: 
+  checklist:
+    name: checklist
+    uses: ./.github/workflows/ci-checklist.yml
+    with:
+      project-path: src/ShotCaller.Azure.ServiceBus.Messaging/ShotCaller.Azure.ServiceBus.Messaging.csproj
+      
+
+  
