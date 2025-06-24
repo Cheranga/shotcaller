@@ -1,9 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <WarningsAsErrors>true</WarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>ShotCaller.Azure.ServiceBus.Messaging</Title>
+        <Authors>Cheranga Hatangala</Authors>
+        <PackageProjectUrl>https://github.com/Cheranga/shotcaller</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Cheranga/shotcaller</RepositoryUrl>
+        <Version>0.0.1</Version>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,7 +22,7 @@
         <PackageReference Include="Roslynator.Analyzers" PrivateAssets="all"/>
         <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all"/>
         <PackageReference Include="Azure.Messaging.ServiceBus"/>
-        <PackageReference Include="Microsoft.Extensions.Azure" />
+        <PackageReference Include="Microsoft.Extensions.Azure"/>
     </ItemGroup>
 
 </Project>
