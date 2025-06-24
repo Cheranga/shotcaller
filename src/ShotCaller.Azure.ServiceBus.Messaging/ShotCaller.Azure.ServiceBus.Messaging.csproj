@@ -1,6 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <WarningsAsErrors>true</WarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    </PropertyGroup>
+    <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
@@ -18,7 +22,7 @@
         <PackageReference Include="Roslynator.Analyzers" PrivateAssets="all"/>
         <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all"/>
         <PackageReference Include="Azure.Messaging.ServiceBus"/>
-        <PackageReference Include="Microsoft.Extensions.Azure" />
+        <PackageReference Include="Microsoft.Extensions.Azure"/>
     </ItemGroup>
 
 </Project>
