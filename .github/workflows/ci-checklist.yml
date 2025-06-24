@@ -36,3 +36,7 @@ jobs:
 
       - name: Build Project
         run: dotnet build --configuration Release --no-restore ${{ inputs.project-path }}
+        
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx" ${{ inputs.project-path }}
+        
