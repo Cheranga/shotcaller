@@ -15,7 +15,7 @@ jobs:
     name: checklist
     uses: ./.github/workflows/ci-checklist.yml
     with:
-      project-path: src/ShotCaller.Azure.ServiceBus.Messaging/ShotCaller.Azure.ServiceBus.Messaging.csproj
+      project-path: tests/ShotCaller.Azure.ServiceBus.Messaging.Tests/ShotCaller.Azure.ServiceBus.Messaging.Tests.csproj
       
 
   
