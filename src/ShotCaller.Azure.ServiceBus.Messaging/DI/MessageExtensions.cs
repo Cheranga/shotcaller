@@ -47,7 +47,10 @@ public static class MessageExtensions
             return publisher;
         });
 
-        return services.AddOptions<PublisherConfig<TMessage>>(specifiedPublisherName);
+        return services
+            .AddOptions<PublisherConfig<TMessage>>(specifiedPublisherName)
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
     }
 
     /// <summary>

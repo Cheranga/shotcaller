@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using ShotCaller.Azure.ServiceBus.Messaging.Core;
 using ShotCaller.Azure.ServiceBus.Messaging.DI;
 using ShotCaller.Azure.ServiceBus.Messaging.Services;
@@ -230,4 +231,30 @@ public partial class MessagePublisherTests
                 }
             );
     }
+
+    [Fact(DisplayName = "Invalid publisher configuration throws exception")]
+    public Task Test4() =>
+        Arrange(() =>
+            {
+                var services = new ServiceCollection().AddLogging().RegisterServiceBus();
+                services
+                    .RegisterServiceBusPublisher<CreateOrderMessage>()
+                    .Configure(config =>
+                    {
+                        config.PublishTo = "";
+                    });
+
+                var serviceProvider = services.BuildServiceProvider();
+                return serviceProvider;
+            })
+            .Act(data =>
+            {
+                var factory = data.GetRequiredService<IServiceBusFactory>();
+                return factory.GetPublisher<CreateOrderMessage>();
+            })
+            .Throw()
+            .Assert(exception =>
+            {
+                Assert.True(exception is OptionsValidationException { OptionsName: nameof(CreateOrderMessage) });
+            });
 }

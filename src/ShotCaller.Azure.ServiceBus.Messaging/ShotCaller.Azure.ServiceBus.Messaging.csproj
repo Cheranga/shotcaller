@@ -23,6 +23,7 @@
         <PackageReference Include="SonarAnalyzer.CSharp" PrivateAssets="all"/>
         <PackageReference Include="Azure.Messaging.ServiceBus"/>
         <PackageReference Include="Microsoft.Extensions.Azure"/>
+        <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations"/>
     </ItemGroup>
 
     <ItemGroup>

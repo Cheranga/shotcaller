@@ -13,6 +13,7 @@
         <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.4"/>
         <PackageVersion Include="Microsoft.Extensions.Azure" Version="1.11.0"/>
         <PackageVersion Include="Azure.Messaging.ServiceBus" Version="7.19.0"/>
+        <PackageVersion Include="Microsoft.Extensions.Options.DataAnnotations" Version="9.0.6" />
 
         <!--        Test projects-->
         <PackageVersion Include="AutoBogus" Version="2.13.1"/>

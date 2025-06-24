@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using Azure.Messaging.ServiceBus;
 using ShotCaller.Azure.ServiceBus.Messaging.Core;
 
@@ -16,12 +17,14 @@ public sealed record PublisherConfig<TMessage>
     /// Gets or sets the function that creates a new instance of ServiceBusClient.
     /// This is required to establish connection with Azure Service Bus.
     /// </summary>
+    [Required]
     public required Func<ServiceBusClient> GetServiceBusClientFunc { get; set; }
 
     /// <summary>
     /// Gets or sets the name of the topic or queue to publish messages to.
     /// This is required to specify the destination for messages.
     /// </summary>
+    [Required(AllowEmptyStrings = false)]
     public required string PublishTo { get; set; }
 
     /// <summary>
