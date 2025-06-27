@@ -1,5 +1,5 @@
-name: release_shotcaller_azure_service_bus
-concurrency: release_shotcaller_azure_service_bus
+name: Release ShotCaller.Azure.ServiceBus.Messaging Package
+concurrency: Release ShotCaller.Azure.ServiceBus.Messaging Package
 
 on:
   workflow_dispatch:
