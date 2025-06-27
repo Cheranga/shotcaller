@@ -1,0 +1,62 @@
+name: release_shotcaller_azure_service_bus
+concurrency: release_shotcaller_azure_service_bus
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+jobs:
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci-checklist.yml
+    with:
+      project-path: tests/ShotCaller.Azure.ServiceBus.Messaging.Tests/ShotCaller.Azure.ServiceBus.Messaging.Tests.csproj
+        
+  release:
+    name: Tag and Release
+    needs:
+      - ci
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Bump version and push tag
+        id: bump
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BRANCH: main
+          DEFAULT_BUMP: ${{ inputs.release_type }}
+
+      - name: Generate release notes with Release Drafter
+        id: generate_release_notes
+        uses: release-drafter/release-drafter@v6
+        with:
+          tag: ${{ steps.bump.outputs.new_tag }}
+          version: ${{ steps.bump.outputs.new_tag }}
+          config-name: release-drafter.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: false
+          tag: ${{ steps.bump.outputs.new_tag }}
+          body: ${{ steps.generate_release_notes.outputs.body }}
+    outputs:
+      VersionNumber: ${{ steps.bump.outputs.new_tag }}             
+            
