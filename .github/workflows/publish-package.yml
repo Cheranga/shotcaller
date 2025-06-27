@@ -1,0 +1,52 @@
+name: publish nuget package
+
+on:
+  workflow_call:
+    inputs:
+      package-version:
+        type: string
+        required: true
+        description: Version of the package to publish (e.g., 1.0.0)
+      dotnet-version:
+        type: string
+        required: true
+        description: Version of .NET to use (e.g., 8.0.x)
+      project-name:
+        type: string
+        required: true
+        description: Path to the csproj file
+      release-notes-url:
+        type: string
+        required: true
+        description: URL for release notes
+
+permissions:
+  contents: write
+  packages: write
+  
+jobs:
+  ci_validations:
+    name: Restore, Build, and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: |
+            ${{ inputs.dotnet-version }}
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Restore Dependencies
+        run: dotnet restore src/${{ inputs.project-name }}/${{ inputs.project-name }}.csproj
+      - name: Build
+        run: dotnet build --configuration Release --no-restore src/${{ inputs.project-name }}/${{ inputs.project-name }}.csproj
+      - name: Create Package
+        run: dotnet pack --configuration Release --no-build -p:ContinuousIntegrationBuild=true -p:PackageVersion=${{ inputs.package-version }} -p:PackageReleaseNotes="See ${{ inputs.release-notes-url }}" src/${{ inputs.project-name }}/${{ inputs.project-name }}.csproj
+      - name: Push to GitHub Packages
+        run: dotnet nuget push "src/${{ inputs.project-name }}/bin/Release/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --skip-duplicate
+    
+    
+  
