@@ -64,6 +64,9 @@ jobs:
     
   publishpackage:
     name: Publish Package
+    permissions:
+      contents: write
+      packages: write
     needs: 
       - release
     uses: ./.github/workflows/publish-package.yml
