@@ -20,10 +20,6 @@ on:
         required: true
         description: URL for release notes
 
-permissions:
-  contents: write
-  packages: write
-  
 jobs:
   ci_validations:
     name: Restore, Build, and Test
