@@ -1,5 +1,9 @@
 name: publish nuget package
 
+permissions:
+  contents: write
+  packages: write
+
 on:
   workflow_call:
     inputs:
@@ -20,10 +24,6 @@ on:
         required: true
         description: URL for release notes
 
-permissions:
-  contents: write
-  packages: write
-  
 jobs:
   ci_validations:
     name: Restore, Build, and Test
