@@ -1,4 +1,4 @@
-﻿# Shotcaller (Azure Service Bus)
+﻿# :tada: Shotcaller (Azure Service Bus)
 
 Shotcaller for Azure Service Bus is simply a library to use typed or named message handlers.
 In V1, we introduce the typed and named publishers, and in a later version we will include the
@@ -8,7 +8,7 @@ Inspiration for this library comes from Microsoft's typed and named HTTP clients
 When using the HTTP client library, you are given the flexibility to use these client types
 appropriately. Even providing a factory operation through the `IHttpClientFactory` interface.
 
-## Context
+## :books: Context
 
 When using Azure Service Bus, you often need to send messages to a queue or topic.
 
@@ -18,19 +18,26 @@ to integrate with multiple Azure Service Bus namespaces.
 Using typed, named publishers allows you to define your message types and their destinations easily, and use
 them throughout your application without needing to worry about the underlying details of the Azure Service Bus.
 
-## Features
+## :sparkles: Features
 
-* Typed and named message publishers for a given message type.
-* Support for multiple Azure Service Bus namespaces.
-* Support using connection strings or any `TokenCredential` implementation to authenticate with Azure Service Bus.
-* Dependency injection support for easy registration and usage of publishers.
-* Discriminated union types for handling message publication results, allowing you to easily handle success and failure
+:point_right: Typed and named message publishers for a given message type.
+
+:point_right: Support for multiple Azure Service Bus namespaces.
+
+:point_right: Support using connection strings or any `TokenCredential` implementation to authenticate with 
+Azure Service Bus.
+
+:point_right: Dependency injection support for easy registration and usage of publishers.
+
+:point_right: Discriminated union types for handling message publication results, allowing you to easily handle success and failure
 cases.
-* Support for configuring publishers with options such as the destination queue or topic, message options,
-serialization options, and more.
-* Ability to publish messages as batches
 
-## Getting Started
+:point_right: Support for configuring publishers with options such as the destination queue or topic, message options,
+serialization options, and more.
+
+:point_right: Ability to publish messages as batches
+
+## :runner: Getting Started
 
 * Install the NuGet package `Shotcaller.Azure.ServiceBus.Messaging`
 
@@ -122,7 +129,7 @@ internal class OrderPublisherBackgroundService(
 
 ```
 
-## Handling Message Publications
+## :dart: Handling Message Publications
 
 We are using discriminated union types to return the result of the message publication.
 
