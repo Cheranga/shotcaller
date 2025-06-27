@@ -1,5 +1,9 @@
 name: publish nuget package
 
+permissions:
+  contents: write
+  packages: write
+
 on:
   workflow_call:
     inputs:
