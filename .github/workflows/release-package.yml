@@ -17,6 +17,8 @@ on:
 jobs:
   ci:
     name: CI
+    permissions:
+      contents: write
     uses: ./.github/workflows/ci-checklist.yml
     with:
       project-path: tests/ShotCaller.Azure.ServiceBus.Messaging.Tests/ShotCaller.Azure.ServiceBus.Messaging.Tests.csproj
