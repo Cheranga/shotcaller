@@ -8,12 +8,13 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>ShotCaller.Azure.ServiceBus.Messaging</PackageId>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Title>ShotCaller.Azure.ServiceBus.Messaging</Title>
         <Authors>Cheranga Hatangala</Authors>
         <PackageProjectUrl>https://github.com/Cheranga/shotcaller</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Cheranga/shotcaller</RepositoryUrl>
-        <Version>0.0.1</Version>
+        <Version />
     </PropertyGroup>
 
     <ItemGroup>

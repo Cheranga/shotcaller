@@ -77,7 +77,9 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: |
-            8.0.x        
+            8.0.x 
+      - name: Restore Dependencies
+        run: dotnet restore src/ShotCaller.Azure.ServiceBus.Messaging/ShotCaller.Azure.ServiceBus.Messaging.csproj            
       - name: Connect to GitHub Nuget Source
         run: dotnet nuget add source --username ${{ github.repository_owner }} --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/shotcaller/index.json"
 #      - name: Remove v prefix
