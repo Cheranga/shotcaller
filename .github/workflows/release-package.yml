@@ -64,28 +64,11 @@ jobs:
     
   publishpackage:
     name: Publish Package
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    needs:
+    needs: 
       - release
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: |
-            8.0.x
-          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-        env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Restore Dependencies
-        run: dotnet restore src/ShotCaller.Azure.ServiceBus.Messaging/ShotCaller.Azure.ServiceBus.Messaging.csproj
-      - name: Build
-        run: dotnet build --configuration Release --no-restore src/ShotCaller.Azure.ServiceBus.Messaging/ShotCaller.Azure.ServiceBus.Messaging.csproj
-      - name: Create Package
-        run: dotnet pack --configuration Release --no-build -p:ContinuousIntegrationBuild=true -p:PackageVersion=${{ needs.release.outputs.VersionNumber }} -p:PackageReleaseNotes="See https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}" src/ShotCaller.Azure.ServiceBus.Messaging/ShotCaller.Azure.ServiceBus.Messaging.csproj
-      - name: Push to GitHub Packages
-        run: dotnet nuget push "src/ShotCaller.Azure.ServiceBus.Messaging/bin/Release/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --skip-duplicate
+    uses: ./.github/workflows/publish-package.yml
+    with:
+      dotnet-version: 8.0.x
+      package-version: ${{ needs.release.outputs.VersionNumber }}
+      project-name: ShotCaller.Azure.ServiceBus.Messaging
+      release-notes-url: https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}
