@@ -4,25 +4,25 @@ concurrency: ci-shotcaller
 permissions:
   contents: read
   packages: write
-  
+
 on:
-  pull_request: 
+  pull_request:
     branches:
       - main
-  push: 
+  push:
     paths:
       - src
       - .github
 
-jobs: 
+jobs:
   lint:
     name: Lint
     uses: ./.github/workflows/linter.yml
     with:
-      dotnet-version: 8.0.x    
+      dotnet-version: 8.0.x
   restorebuildtest:
     name: Restore, Build, and Test
-    needs: 
+    needs:
       - lint
     uses: ./.github/workflows/restore-build-test.yml
     with:

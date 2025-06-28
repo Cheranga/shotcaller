@@ -4,9 +4,9 @@ on:
   workflow_call:
     inputs:
       dotnet-version:
-            type: string
-            required: true
-            description: Version of .NET to use (e.g., 8.0.x)
+        type: string
+        required: true
+        description: Version of .NET to use (e.g., 8.0.x)
       test-project-names:
         type: string
         required: true
@@ -14,7 +14,7 @@ on:
 
 permissions:
   contents: read
-  
+
 jobs:
   restore_build_test:
     name: Restore, Build, and Test

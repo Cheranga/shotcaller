@@ -6,11 +6,7 @@ on:
       release_type:
         type: string
         description: 'Release type'
-        required: true      
-      dotnet-version:
-        type: string
         required: true
-        description: Version of .NET to use (e.g., 8.0.x)
     outputs:
       VersionNumber:
         description: "The version number generated"
@@ -19,13 +15,13 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs:
   bump_version_and_generate_release_notes:
     name: Bump Version and Generate Release Notes
     runs-on: ubuntu-latest
     outputs:
-      VersionNumber: ${{ steps.bump.outputs.new_tag }}    
+      VersionNumber: ${{ steps.bump.outputs.new_tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,7 +34,7 @@ jobs:
           WITH_V: false
           DEFAULT_BRANCH: main
           DEFAULT_BUMP: ${{ inputs.release_type }}
-          
+
       - name: Generate release notes with Release Drafter
         id: generate_release_notes
         uses: release-drafter/release-drafter@v6
@@ -47,8 +43,8 @@ jobs:
           version: ${{ steps.bump.outputs.new_tag }}
           config-name: release-drafter.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
-            
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
