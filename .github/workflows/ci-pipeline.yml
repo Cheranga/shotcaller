@@ -1,6 +1,10 @@
 ﻿name: ci-shotcaller
 concurrency: ci-shotcaller
 
+permissions:
+  contents: read
+  packages: write
+  
 on:
   pull_request: 
     branches:
