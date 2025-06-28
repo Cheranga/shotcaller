@@ -4,7 +4,6 @@ concurrency: ci-shotcaller
 permissions:
   contents: read
   packages: write
-  gists: write
 
 on:
   workflow_dispatch:    
