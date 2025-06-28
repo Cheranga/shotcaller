@@ -194,7 +194,26 @@ services
     });
 
 ```
+## :handshake: Contributing
 
+We welcome contributions to ShotCaller! If you have ideas, suggestions, or bug fixes, 
+please open an issue or submit a pull request.
+
+:high_brightness: Once you clone the repository, make sure to run the below commands so the tooling is set up correctly:
+
+```bash
+
+# Installing the .NET tools, CSharpier for code formatting and Husky for git hooks
+dotnet tool restore
+
+# Installing the Git hooks for Husky
+dotnet husky install
+
+# Optional, making sure the git hooks are set up correctly
+dotnet husky run
+```
+
+:high_brightness: Before you submit the PR, make sure to run the tests and ensure that the code is well-documented.
 
 ## :innocent: Icons
 Icons are from [Juicy Fish](https://www.flaticon.com/free-icons/target)
