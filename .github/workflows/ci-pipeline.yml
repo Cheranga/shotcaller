@@ -11,11 +11,11 @@ on:
       - .github
 
 jobs: 
-  checklist:
-    name: checklist
-    uses: ./.github/workflows/ci-checklist.yml
+  lint:
+    name: Lint
+    uses: ./.github/workflows/ci-linter.yml
     with:
-      project-path: tests/ShotCaller.Azure.ServiceBus.Messaging.Tests/ShotCaller.Azure.ServiceBus.Messaging.Tests.csproj
+      dotnet-version: 8.0.x      
       
 
   
