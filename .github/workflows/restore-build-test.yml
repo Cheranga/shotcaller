@@ -11,9 +11,14 @@ on:
         type: string
         required: true
         description: JSON array of project names to test (e.g., '["ProjectA", "ProjectB"]')
+    secrets:
+      GIST_SECRET:
+        required: true
+        description: Secret for accessing Gist API to create badges
 
 permissions:
   contents: read
+  gists: write
 
 jobs:
   restore_build_test:
@@ -50,7 +55,7 @@ jobs:
         with:
           name: coverage-${{ matrix.project-name }}
           path: ./coverage/${{ matrix.project-name }}
-    
+  
   coveragereport:
     needs: restore_build_test
     runs-on: ubuntu-latest
@@ -61,20 +66,20 @@ jobs:
           path: coverage
           pattern: coverage-*
           merge-multiple: true
-          
+
       - name: Generate combined coverage report
         uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
         with:
           reports: './coverage/**/coverage.cobertura.xml'
           targetdir: 'coveragereport'
           reporttypes: 'HtmlInline;Cobertura;Badges'
-          
+
       - name: Upload combined coverage report
         uses: actions/upload-artifact@v4
         with:
           name: CoverageReport
           path: coveragereport
-          
+
       - name: Create coverage badge
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:

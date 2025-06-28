@@ -4,6 +4,7 @@ concurrency: ci-shotcaller
 permissions:
   contents: read
   packages: write
+  gists: write
 
 on:
   workflow_dispatch:    
@@ -29,6 +30,8 @@ jobs:
     with:
       dotnet-version: 8.0.x
       test-project-names: '["ShotCaller.Azure.ServiceBus.Messaging.Tests"]'
+    secrets: 
+      GIST_SECRET: ${{ secrets.GIST_SECRET }}
       
 
   
