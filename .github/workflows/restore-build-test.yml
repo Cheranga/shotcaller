@@ -114,7 +114,7 @@ jobs:
           gistID: 39e81c066bc22668168352b8484ef7df
           filename: coverage-badge.json
           label: Combined Coverage
-          message: ${{ env.COVERAGE }}
+          message: ${{ env.COVERAGE }}%
           color: ${{ env.COVERAGE_COLOR }}
           
           
