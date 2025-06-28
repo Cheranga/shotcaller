@@ -43,11 +43,12 @@ jobs:
         run: dotnet build --configuration Release --no-restore tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
 
       - name: Test with coverage
-        run: dotnet test --no-restore --verbosity normal
-          --logger "trx;LogFileName=${{ matrix.project-name }}-test-results.trx"
-          --collect:"XPlat Code Coverage"
-          --results-directory ./coverage/${{ matrix.project-name }}
-          tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
+        run: |
+          dotnet test --no-restore --verbosity normal \
+            --logger "trx;LogFileName=${{ matrix.project-name }}-test-results.trx" \
+            --collect:"XPlat Code Coverage" \
+            --results-directory ./coverage/${{ matrix.project-name }} \
+            tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
 
       - name: Upload coverage artifacts
         uses: actions/upload-artifact@v4
@@ -87,7 +88,7 @@ jobs:
           # Extract only the first line-rate and calculate coverage
           COVERAGE_RAW=$(grep -oP 'line-rate="\K[0-9.]+' coveragereport/Cobertura.xml | head -n 1)
           COVERAGE_PCT=$(awk -v rate="$COVERAGE_RAW" 'BEGIN { printf "%.0f", rate * 100 }')
-      
+          
           # Determine color based on coverage %
           if [ "$COVERAGE_PCT" -ge 90 ]; then
           COLOR=brightgreen
@@ -100,10 +101,10 @@ jobs:
           else
           COLOR=red
           fi
-      
+          
           echo "COVERAGE=$COVERAGE_PCT" >> $GITHUB_ENV
           echo "COVERAGE_COLOR=$COLOR" >> $GITHUB_ENV
-      
+          
           echo "Debug: Raw line-rate = $COVERAGE_RAW"
           echo "Debug: Coverage = $COVERAGE_PCT"
 
