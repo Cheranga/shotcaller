@@ -1,0 +1,57 @@
+name: Release ShotCaller.Azure.ServiceBus.Messaging Package
+concurrency: Release ShotCaller.Azure.ServiceBus.Messaging Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      dotnet_version:
+        description: 'Version of .NET to use (e.g., 8.0.x)'
+        required: true
+        default: '8.0.x'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  lint:
+    name: Lint
+    permissions:
+      contents: read
+    uses: ./.github/workflows/linter.yml
+    with:
+      dotnet-version: ${{ inputs.dotnet_version }}
+  restore_build_test:
+    name: Restore, Build, and Test
+    needs:
+      - lint
+    uses: ./.github/workflows/restore-build-test.yml
+    with:
+      dotnet-version: ${{ inputs.dotnet_version }}
+      test-project-names: '["ShotCaller.Azure.ServiceBus.Messaging.Tests"]'
+  release:
+    name: Tag and Release
+    needs:
+      - restore_build_test
+    uses: './.github/workflows/tag-and-create-release.yml'
+    with:
+      release_type: ${{ inputs.release_type }}
+  publishpackage:
+    name: Publish Nuget Package
+    needs:
+      - release
+    uses: ./.github/workflows/publish-package.yml
+    with:
+      dotnet-version: ${{ inputs.dotnet_version }}
+      package-version: ${{ needs.release.outputs.VersionNumber }}
+      project-name: ShotCaller.Azure.ServiceBus.Messaging
+      release-notes-url: https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}

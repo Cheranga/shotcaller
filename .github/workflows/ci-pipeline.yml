@@ -1,21 +1,33 @@
 ﻿name: ci-shotcaller
 concurrency: ci-shotcaller
 
+permissions:
+  contents: read
+  packages: write
+
 on:
-  pull_request: 
+  pull_request:
     branches:
       - main
-  push: 
+  push:
     paths:
       - src
       - .github
 
-jobs: 
-  checklist:
-    name: checklist
-    uses: ./.github/workflows/ci-checklist.yml
+jobs:
+  lint:
+    name: Lint
+    uses: ./.github/workflows/linter.yml
     with:
-      project-path: tests/ShotCaller.Azure.ServiceBus.Messaging.Tests/ShotCaller.Azure.ServiceBus.Messaging.Tests.csproj
+      dotnet-version: 8.0.x
+  restorebuildtest:
+    name: Restore, Build, and Test
+    needs:
+      - lint
+    uses: ./.github/workflows/restore-build-test.yml
+    with:
+      dotnet-version: 8.0.x
+      test-project-names: '["ShotCaller.Azure.ServiceBus.Messaging.Tests"]'
       
 
   

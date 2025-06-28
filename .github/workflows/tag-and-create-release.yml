@@ -1,39 +1,27 @@
-name: Release ShotCaller.Azure.ServiceBus.Messaging Package
-concurrency: Release ShotCaller.Azure.ServiceBus.Messaging Package
+name: tag-and-create-release
 
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       release_type:
+        type: string
         description: 'Release type'
         required: true
-        default: 'patch'
-        type: choice
-        options:
-          - patch
-          - minor
-          - major
+    outputs:
+      VersionNumber:
+        description: "The version number generated"
+        value: ${{ jobs.bump_version_and_generate_release_notes.outputs.VersionNumber }}
+
 
 permissions:
   contents: write
-  packages: write
 
 jobs:
-  ci:
-    name: CI
-    permissions:
-      contents: write
-    uses: ./.github/workflows/ci-checklist.yml
-    with:
-      project-path: tests/ShotCaller.Azure.ServiceBus.Messaging.Tests/ShotCaller.Azure.ServiceBus.Messaging.Tests.csproj
-        
-  release:
-    name: Tag and Release
-    needs:
-      - ci
+  bump_version_and_generate_release_notes:
+    name: Bump Version and Generate Release Notes
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
+    outputs:
+      VersionNumber: ${{ steps.bump.outputs.new_tag }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -63,16 +51,4 @@ jobs:
           generateReleaseNotes: false
           tag: ${{ steps.bump.outputs.new_tag }}
           body: ${{ steps.generate_release_notes.outputs.body }}
-    outputs:
-      VersionNumber: ${{ steps.bump.outputs.new_tag }}
-    
-  publishpackage:
-    name: Publish Package
-    needs: 
-      - release
-    uses: ./.github/workflows/publish-package.yml
-    with:
-      dotnet-version: 8.0.x
-      package-version: ${{ needs.release.outputs.VersionNumber }}
-      project-name: ShotCaller.Azure.ServiceBus.Messaging
-      release-notes-url: https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}
+       
