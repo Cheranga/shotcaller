@@ -59,4 +59,4 @@ jobs:
       release-notes-url: https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}
     secrets:
       NUGET_KEY: ${{ secrets.NUGET_KEY }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_KEY: ${{ secrets.GITHUB_TOKEN }}

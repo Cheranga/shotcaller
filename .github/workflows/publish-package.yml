@@ -24,7 +24,7 @@ on:
         required: true
         description: URL for release notes
     secrets:
-      GITHUB_TOKEN:
+      GITHUB_KEY:
         required: true
         description: GitHub token to publish to GitHub Packages
       NUGET_KEY:
@@ -45,7 +45,7 @@ jobs:
             ${{ inputs.dotnet-version }}
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         env:
-          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NUGET_AUTH_TOKEN: ${{secrets.GITHUB_KEY}}
       - name: Restore Dependencies
         run: dotnet restore src/${{ inputs.project-name }}/${{ inputs.project-name }}.csproj
       - name: Build
@@ -53,7 +53,7 @@ jobs:
       - name: Create Package
         run: dotnet pack --configuration Release --no-build -p:ContinuousIntegrationBuild=true -p:PackageVersion=${{ inputs.package-version }} -p:PackageReleaseNotes="See ${{ inputs.release-notes-url }}" src/${{ inputs.project-name }}/${{ inputs.project-name }}.csproj
       - name: Push to GitHub Packages
-        run: dotnet nuget push "src/${{ inputs.project-name }}/bin/Release/${{ inputs.project-name }}.${{ inputs.package-version }}.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --skip-duplicate
+        run: dotnet nuget push "src/${{ inputs.project-name }}/bin/Release/${{ inputs.project-name }}.${{ inputs.package-version }}.nupkg" --api-key ${{ secrets.GITHUB_KEY }} --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --skip-duplicate
       - name: Push to Nuget.org
         run: dotnet nuget push "src/${{ inputs.project-name }}/bin/Release/${{ inputs.project-name }}.${{ inputs.package-version }}.nupkg" --api-key ${{ secrets.NUGET_KEY }} --source 'https://api.nuget.org/v3/index.json' --skip-duplicate
     
