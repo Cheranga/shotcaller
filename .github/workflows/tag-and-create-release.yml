@@ -11,8 +11,12 @@ on:
         type: string
         required: true
         description: Version of .NET to use (e.g., 8.0.x)
+    outputs:
+      VersionNumber:
+        description: "The version number generated"
+        value: ${{ jobs.bump_version_and_generate_release_notes.outputs.VersionNumber }}
 
-        
+
 permissions:
   contents: write
   
@@ -49,5 +53,4 @@ jobs:
           generateReleaseNotes: false
           tag: ${{ steps.bump.outputs.new_tag }}
           body: ${{ steps.generate_release_notes.outputs.body }}
-    outputs:
-      VersionNumber: ${{ steps.bump.outputs.new_tag }}            
+       
