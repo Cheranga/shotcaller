@@ -18,6 +18,8 @@ jobs:
       dotnet-version: 8.0.x    
   restorebuildtest:
     name: Restore, Build, and Test
+    needs: 
+      - lint
     uses: ./.github/workflows/ci-restore-build-test.yml
     with:
       dotnet-version: 8.0.x
