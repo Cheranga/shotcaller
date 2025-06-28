@@ -1,0 +1,42 @@
+name: ci-restore-build-test
+
+on:
+  workflow_call:
+    inputs:
+      dotnet-version:
+            type: string
+            required: true
+            description: Version of .NET to use (e.g., 8.0.x)
+      test-project-names:
+        type: string
+        required: true
+        description: JSON array of project names to test (e.g., '["ProjectA", "ProjectB"]')
+
+permissions:
+  contents: read
+  
+jobs:
+  restore_build_test:
+    name: Restore, Build, and Test
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project-name: ${{ fromJSON(inputs.test-project-names) }}
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ inputs.dotnet-version }}
+
+      - name: Restore Dependencies
+        run: dotnet restore tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
+
+      - name: Build Project
+        run: dotnet build --configuration Release --no-restore tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
+
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx" tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj

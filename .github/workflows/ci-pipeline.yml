@@ -15,7 +15,13 @@ jobs:
     name: Lint
     uses: ./.github/workflows/ci-linter.yml
     with:
-      dotnet-version: 8.0.x      
+      dotnet-version: 8.0.x    
+  restorebuildtest:
+    name: Restore, Build, and Test
+    uses: ./.github/workflows/ci-restore-build-test.yml
+    with:
+      dotnet-version: 8.0.x
+      test-project-names: '["ShotCaller.Azure.ServiceBus.Messaging.Tests"]'
       
 
   
