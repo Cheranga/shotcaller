@@ -84,27 +84,28 @@ jobs:
       - name: Get coverage info
         id: coverage
         run: |
-          # Extract the line-rate and convert to percentage with awk to ensure clean number handling
-          COVERAGE_PCT=$(grep -oP 'line-rate="\K[0-9.]+' coveragereport/Cobertura.xml | awk '{printf "%.0f", $1 * 100}')
-          
-          # Simple integer comparisons
+          # Extract only the first line-rate and calculate coverage
+          COVERAGE_RAW=$(grep -oP 'line-rate="\K[0-9.]+' coveragereport/Cobertura.xml | head -n 1)
+          COVERAGE_PCT=$(awk -v rate="$COVERAGE_RAW" 'BEGIN { printf "%.0f", rate * 100 }')
+      
+          # Determine color based on coverage %
           if [ "$COVERAGE_PCT" -ge 90 ]; then
-            COLOR=brightgreen
+          COLOR=brightgreen
           elif [ "$COVERAGE_PCT" -ge 80 ]; then
-            COLOR=green
+          COLOR=green
           elif [ "$COVERAGE_PCT" -ge 70 ]; then
-            COLOR=yellowgreen
+          COLOR=yellowgreen
           elif [ "$COVERAGE_PCT" -ge 60 ]; then
-            COLOR=yellow
+          COLOR=yellow
           else
-            COLOR=red
+          COLOR=red
           fi
-          
+      
           echo "COVERAGE=$COVERAGE_PCT" >> $GITHUB_ENV
           echo "COVERAGE_COLOR=$COLOR" >> $GITHUB_ENV
-          
-          # Debug output
-          echo "Debug: Coverage value is $COVERAGE_PCT"
+      
+          echo "Debug: Raw line-rate = $COVERAGE_RAW"
+          echo "Debug: Coverage = $COVERAGE_PCT"
 
       - name: Create coverage badge
         uses: schneegans/dynamic-badges-action@v1.7.0
