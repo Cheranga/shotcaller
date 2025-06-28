@@ -11,9 +11,7 @@ on:
         type: string
         required: true
         description: Version of .NET to use (e.g., 8.0.x)
-    secrets:
-      GITHUB_NUGET_TOKEN:
-        required: true
+
         
 permissions:
   contents: write
@@ -30,7 +28,7 @@ jobs:
         id: bump
         uses: anothrNick/github-tag-action@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_NUGET_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: false
           DEFAULT_BRANCH: main
           DEFAULT_BUMP: ${{ inputs.release_type }}
@@ -43,7 +41,7 @@ jobs:
           version: ${{ steps.bump.outputs.new_tag }}
           config-name: release-drafter.yml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_NUGET_TOKEN }}  
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  
             
       - name: Create Release
         uses: ncipollo/release-action@v1
