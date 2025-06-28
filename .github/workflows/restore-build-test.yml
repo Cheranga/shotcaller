@@ -85,7 +85,9 @@ jobs:
         id: coverage
         run: |
           COVERAGE=$(grep -oP 'line-rate="\K[0-9.]+' coveragereport/Cobertura.xml)
-          COVERAGE_PCT=$(echo "scale=1; ${COVERAGE} * 100" | bc)
+          # Convert to percentage and round to 2 decimal places
+          COVERAGE_PCT=$(printf "%.2f" $(echo "${COVERAGE} * 100" | bc -l))
+          # Use bc for floating point comparisons
           if (( $(echo "$COVERAGE_PCT >= 90" | bc -l) )); then
             COLOR=brightgreen
           elif (( $(echo "$COVERAGE_PCT >= 80" | bc -l) )); then
@@ -97,8 +99,11 @@ jobs:
           else
             COLOR=red
           fi
+          # Remove any trailing zeros after decimal point for cleaner display
+          COVERAGE_PCT=$(echo $COVERAGE_PCT | sed 's/\.0\+$//')
           echo "COVERAGE=$COVERAGE_PCT" >> $GITHUB_ENV
           echo "COVERAGE_COLOR=$COLOR" >> $GITHUB_ENV
+
 
 
       - name: Create coverage badge
