@@ -1,9 +1,18 @@
-﻿# :tada: Shotcaller (Azure Service Bus)
+﻿<div align="center">
+<img src="target.png" alt="ShotCaller" width="150px"/>
+
+# ShotCaller
+
+Typed and Named Message Handlers for Azure Service Bus
+
 
 [![Latest Release](https://img.shields.io/github/v/release/Cheranga/shotcaller?sort=semver)](https://github.com/Cheranga/shotcaller/releases/latest)
 [![Build and Test](https://github.com/Cheranga/shotcaller/actions/workflows/ci-pipeline.yml/badge.svg)](https://github.com/Cheranga/shotcaller/actions/workflows/ci-pipeline.yml)
 [![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Cheranga/39e81c066bc22668168352b8484ef7df/raw/coverage-badge.json)](https://github.com/Cheranga/shotcaller/actions/workflows/restore-build-test.yml)
 
+</div>
+
+# :tada: Welcome to Shotcaller
 
 Shotcaller for Azure Service Bus is simply a library to use typed or named message handlers.
 In V1, we introduce the typed and named publishers, and in a later version we will include the
