@@ -1,5 +1,5 @@
 ﻿<div align="center">
-<img src="target.png" alt="ShotCaller" width="150px"/>
+<img src="shotcaller.png" alt="ShotCaller" width="150px"/>
 
 # ShotCaller
 
@@ -159,7 +159,7 @@ _ = operation.Result switch
 
 ```
 
-## :dart: Working with multiple Azure Service Bus Namespaces
+## :dart::dart: Working with multiple Azure Service Bus Namespaces
 
 There's nothing special about using multiple Azure Service Bus namespaces.
 Because the approach taken in here, you just need to register the publisher with the appropriate namespace. 
@@ -194,7 +194,26 @@ services
     });
 
 ```
+## :handshake: Contributing
 
+We welcome contributions to ShotCaller! If you have ideas, suggestions, or bug fixes, 
+please open an issue or submit a pull request.
+
+:high_brightness: Once you clone the repository, make sure to run the below commands so the tooling is set up correctly:
+
+```bash
+
+# Installing the .NET tools, CSharpier for code formatting and Husky for git hooks
+dotnet tool restore
+
+# Installing the Git hooks for Husky
+dotnet husky install
+
+# Optional, making sure the git hooks are set up correctly
+dotnet husky run
+```
+
+:high_brightness: Before you submit the PR, make sure to run the tests and ensure that the code is well-documented.
 
 ## :innocent: Icons
 Icons are from [Juicy Fish](https://www.flaticon.com/free-icons/target)

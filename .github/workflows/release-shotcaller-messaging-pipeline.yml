@@ -57,3 +57,6 @@ jobs:
       package-version: ${{ needs.release.outputs.VersionNumber }}
       project-name: ShotCaller.Azure.ServiceBus.Messaging
       release-notes-url: https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}
+    secrets:
+      NUGET_KEY: ${{ secrets.NUGET_KEY }}
+      GITHUB_KEY: ${{ secrets.GITHUB_TOKEN }}
