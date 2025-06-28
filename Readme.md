@@ -159,7 +159,7 @@ _ = operation.Result switch
 
 ```
 
-## :dart: Working with multiple Azure Service Bus Namespaces
+## :dart::dart: Working with multiple Azure Service Bus Namespaces
 
 There's nothing special about using multiple Azure Service Bus namespaces.
 Because the approach taken in here, you just need to register the publisher with the appropriate namespace. 
