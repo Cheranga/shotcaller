@@ -1,4 +1,18 @@
-﻿# :tada: Shotcaller (Azure Service Bus)
+﻿<div align="center">
+<img src="target.png" alt="ShotCaller" width="150px"/>
+
+# ShotCaller
+
+Typed and Named Message Handlers for Azure Service Bus
+
+
+[![Latest Release](https://img.shields.io/github/v/release/Cheranga/shotcaller?sort=semver)](https://github.com/Cheranga/shotcaller/releases/latest)
+[![Build and Test](https://github.com/Cheranga/shotcaller/actions/workflows/ci-pipeline.yml/badge.svg)](https://github.com/Cheranga/shotcaller/actions/workflows/ci-pipeline.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/Cheranga/39e81c066bc22668168352b8484ef7df/raw/coverage-badge.json)](https://github.com/Cheranga/shotcaller/actions/workflows/restore-build-test.yml)
+
+</div>
+
+# :tada: Welcome to Shotcaller
 
 Shotcaller for Azure Service Bus is simply a library to use typed or named message handlers.
 In V1, we introduce the typed and named publishers, and in a later version we will include the
@@ -144,4 +158,45 @@ _ = operation.Result switch
 };
 
 ```
+
+## :dart: Working with multiple Azure Service Bus Namespaces
+
+There's nothing special about using multiple Azure Service Bus namespaces.
+Because the approach taken in here, you just need to register the publisher with the appropriate namespace. 
+
+```csharp
+
+// Registering the Shotcaller Azure Service Bus library
+var services = new ServiceCollection().AddLogging().RegisterServiceBus();
+
+// Now you can start registering the publishers with different namespaces.
+// Registering a publisher for a message type as a typed client.
+// The publisher will use the connection string to connect to the Azure Service Bus namespace.
+services
+    .RegisterServiceBusPublisher<CreateOrderMessage>("A")
+    .Configure(config =>
+    {
+        config.GetServiceBusClientFunc = () => new ServiceBusClient(connectionString1);
+        config.PublishTo = JustOrdersQueue;
+        config.SerializerOptions = _serializerOptions;
+    });
+
+// Registering a publisher for a message type as a named client.
+// The publisher will use managed identity to connect to the Azure Service Bus namespace.
+services
+    .RegisterServiceBusPublisher<OrderCreatedEvent>("B")
+    .Configure(config =>
+    {
+        config.GetServiceBusClientFunc = () => new ServiceBusClient("[azure service bus namespace name]", 
+                                                                    new ManagedIdentityCredential());
+        config.PublishTo = JustOrdersQueue;
+        config.SerializerOptions = _serializerOptions;
+    });
+
+```
+
+
+## :innocent: Icons
+Icons are from [Juicy Fish](https://www.flaticon.com/free-icons/target)
+
 

@@ -6,6 +6,7 @@ permissions:
   packages: write
 
 on:
+  workflow_dispatch:    
   pull_request:
     branches:
       - main
@@ -28,6 +29,8 @@ jobs:
     with:
       dotnet-version: 8.0.x
       test-project-names: '["ShotCaller.Azure.ServiceBus.Messaging.Tests"]'
+    secrets: 
+      GIST_SECRET: ${{ secrets.GIST_SECRET }}
       
 
   
