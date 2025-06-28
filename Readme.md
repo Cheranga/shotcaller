@@ -159,6 +159,43 @@ _ = operation.Result switch
 
 ```
 
+## :dart: Working with multiple Azure Service Bus Namespaces
+
+There's nothing special about using multiple Azure Service Bus namespaces.
+Because the approach taken in here, you just need to register the publisher with the appropriate namespace. 
+
+```csharp
+
+// Registering the Shotcaller Azure Service Bus library
+var services = new ServiceCollection().AddLogging().RegisterServiceBus();
+
+// Now you can start registering the publishers with different namespaces.
+// Registering a publisher for a message type as a typed client.
+// The publisher will use the connection string to connect to the Azure Service Bus namespace.
+services
+    .RegisterServiceBusPublisher<CreateOrderMessage>("A")
+    .Configure(config =>
+    {
+        config.GetServiceBusClientFunc = () => new ServiceBusClient(connectionString1);
+        config.PublishTo = JustOrdersQueue;
+        config.SerializerOptions = _serializerOptions;
+    });
+
+// Registering a publisher for a message type as a named client.
+// The publisher will use managed identity to connect to the Azure Service Bus namespace.
+services
+    .RegisterServiceBusPublisher<OrderCreatedEvent>("B")
+    .Configure(config =>
+    {
+        config.GetServiceBusClientFunc = () => new ServiceBusClient("[azure service bus namespace name]", 
+                                                                    new ManagedIdentityCredential());
+        config.PublishTo = JustOrdersQueue;
+        config.SerializerOptions = _serializerOptions;
+    });
+
+```
+
+
 ## :innocent: Icons
 Icons are from [Juicy Fish](https://www.flaticon.com/free-icons/target)
 
