@@ -38,6 +38,8 @@ jobs:
     with:
       dotnet-version: ${{ inputs.dotnet_version }}
       test-project-names: '["ShotCaller.Azure.ServiceBus.Messaging.Tests"]'
+    secrets: 
+      GIST_SECRET: ${{ secrets.GIST_SECRET }}
   release:
     name: Tag and Release
     needs:
