@@ -25,8 +25,8 @@ on:
         description: URL for release notes
 
 jobs:
-  ci_validations:
-    name: Restore, Build, and Test
+  publish_package:
+    name: Publish NuGet Package
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

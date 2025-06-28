@@ -46,6 +46,18 @@ jobs:
     with:
       release_type: ${{ inputs.release_type }}
       dotnet-version: ${{ inputs.dotnet_version }}
+  publishpackage:
+    name: Publish Package
+    needs: 
+      - release
+    uses: ./.github/workflows/publish-package.yml
+    with:
+      dotnet-version: 8.0.x
+      package-version: ${{ needs.release.outputs.VersionNumber }}
+      project-name: ShotCaller.Azure.ServiceBus.Messaging
+      release-notes-url: https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}
+
+    
 #    runs-on: ubuntu-latest
 #    permissions:
 #      contents: write
