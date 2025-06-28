@@ -84,25 +84,28 @@ jobs:
       - name: Get coverage info
         id: coverage
         run: |
-          COVERAGE=$(grep -oP 'line-rate="\K[0-9.]+' coveragereport/Cobertura.xml)
-          # Convert to percentage and round to 2 decimal places
-          COVERAGE_PCT=$(printf "%.2f" $(echo "${COVERAGE} * 100" | bc -l))
-          # Use bc for floating point comparisons
-          if (( $(echo "$COVERAGE_PCT >= 90" | bc -l) )); then
+          # Get the line-rate value and multiply by 100
+          LINE_RATE=$(grep -oP 'line-rate="\K[0-9.]+' coveragereport/Cobertura.xml)
+          COVERAGE_PCT=$(echo "$LINE_RATE * 100" | bc)
+          # Round to whole number to avoid decimal issues
+          COVERAGE_PCT=$(printf "%.0f" $COVERAGE_PCT)
+          
+          # Simple integer comparisons
+          if [ $COVERAGE_PCT -ge 90 ]; then
             COLOR=brightgreen
-          elif (( $(echo "$COVERAGE_PCT >= 80" | bc -l) )); then
+          elif [ $COVERAGE_PCT -ge 80 ]; then
             COLOR=green
-          elif (( $(echo "$COVERAGE_PCT >= 70" | bc -l) )); then
+          elif [ $COVERAGE_PCT -ge 70 ]; then
             COLOR=yellowgreen
-          elif (( $(echo "$COVERAGE_PCT >= 60" | bc -l) )); then
+          elif [ $COVERAGE_PCT -ge 60 ]; then
             COLOR=yellow
           else
             COLOR=red
           fi
-          # Remove any trailing zeros after decimal point for cleaner display
-          COVERAGE_PCT=$(echo $COVERAGE_PCT | sed 's/\.0\+$//')
+          
           echo "COVERAGE=$COVERAGE_PCT" >> $GITHUB_ENV
           echo "COVERAGE_COLOR=$COLOR" >> $GITHUB_ENV
+
 
 
 
