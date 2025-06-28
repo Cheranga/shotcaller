@@ -38,5 +38,53 @@ jobs:
       - name: Build Project
         run: dotnet build --configuration Release --no-restore tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
 
-      - name: Test
-        run: dotnet test --no-restore --verbosity normal --logger "trx;LogFileName=test-results.trx" tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
+      - name: Test with coverage
+        run: dotnet test --no-restore --verbosity normal
+          --logger "trx;LogFileName=${{ matrix.project-name }}-test-results.trx"
+          --collect:"XPlat Code Coverage"
+          --results-directory ./coverage/${{ matrix.project-name }}
+          tests/${{ matrix.project-name }}/${{ matrix.project-name }}.csproj
+
+      - name: Upload coverage artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.project-name }}
+          path: ./coverage/${{ matrix.project-name }}
+    
+  coveragereport:
+    needs: restore_build_test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all coverage artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: coverage
+          pattern: coverage-*
+          merge-multiple: true
+          
+      - name: Generate combined coverage report
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.2.0
+        with:
+          reports: './coverage/**/coverage.cobertura.xml'
+          targetdir: 'coveragereport'
+          reporttypes: 'HtmlInline;Cobertura;Badges'
+          
+      - name: Upload combined coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: CoverageReport
+          path: coveragereport
+          
+      - name: Create coverage badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: 39e81c066bc22668168352b8484ef7df
+          filename: coverage-badge.json
+          label: Combined Coverage
+          message: ${{ env.COVERAGE }}
+          color: ${{ env.COVERAGE_COLOR }}
+          
+          
+          
+    
