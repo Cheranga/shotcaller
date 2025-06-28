@@ -80,6 +80,26 @@ jobs:
         with:
           name: CoverageReport
           path: coveragereport
+          
+      - name: Get coverage info
+        id: coverage
+        run: |
+          COVERAGE=$(cat coveragereport/badge_linecoverage.txt)
+          # Remove the % symbol from the coverage value
+          COVERAGE_PCT=${COVERAGE//%/}
+          if (( $(echo "$COVERAGE_PCT >= 90" | bc -l) )); then
+            COLOR=brightgreen
+          elif (( $(echo "$COVERAGE_PCT >= 80" | bc -l) )); then
+            COLOR=green
+          elif (( $(echo "$COVERAGE_PCT >= 70" | bc -l) )); then
+            COLOR=yellowgreen
+          elif (( $(echo "$COVERAGE_PCT >= 60" | bc -l) )); then
+            COLOR=yellow
+          else
+            COLOR=red
+          fi
+          echo "COVERAGE=$COVERAGE_PCT" >> $GITHUB_ENV
+          echo "COVERAGE_COLOR=$COLOR" >> $GITHUB_ENV
 
       - name: Create coverage badge
         uses: schneegans/dynamic-badges-action@v1.7.0
