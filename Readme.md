@@ -12,7 +12,7 @@ Typed and Named Message Handlers for Azure Service Bus
 
 </div>
 
-# :tada: Welcome to Shotcaller
+# :tada: Welcome to ShotCaller
 
 Shotcaller for Azure Service Bus is simply a library to use typed or named message handlers.
 In V1, we introduce the typed and named publishers, and in a later version we will include the
