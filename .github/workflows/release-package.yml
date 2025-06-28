@@ -13,66 +13,81 @@ on:
           - patch
           - minor
           - major
+      dotnet_version:
+        description: 'Version of .NET to use (e.g., 8.0.x)'
+        required: true
+        default: '8.0.x'
 
 permissions:
   contents: write
   packages: write
 
 jobs:
-  ci:
-    name: CI
+  lint:
+    name: Lint
     permissions:
       contents: write
-    uses: ./.github/workflows/ci-checklist.yml
+    uses: ./.github/workflows/linter.yml
     with:
-      project-path: tests/ShotCaller.Azure.ServiceBus.Messaging.Tests/ShotCaller.Azure.ServiceBus.Messaging.Tests.csproj
-        
+      dotnet-version: ${{ inputs.dotnet_version }}
+  restore_build_test:
+    name: Restore, Build, and Test
+    needs: 
+      - lint
+    uses: ./.github/workflows/restore-build-test.yml
+    with:
+      dotnet-version: ${{ inputs.dotnet_version }}
+      test-project-names: '["ShotCaller.Azure.ServiceBus.Messaging.Tests"]'        
   release:
     name: Tag and Release
     needs:
-      - ci
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Bump version and push tag
-        id: bump
-        uses: anothrNick/github-tag-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          WITH_V: false
-          DEFAULT_BRANCH: main
-          DEFAULT_BUMP: ${{ inputs.release_type }}
-
-      - name: Generate release notes with Release Drafter
-        id: generate_release_notes
-        uses: release-drafter/release-drafter@v6
-        with:
-          tag: ${{ steps.bump.outputs.new_tag }}
-          version: ${{ steps.bump.outputs.new_tag }}
-          config-name: release-drafter.yml
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        with:
-          generateReleaseNotes: false
-          tag: ${{ steps.bump.outputs.new_tag }}
-          body: ${{ steps.generate_release_notes.outputs.body }}
-    outputs:
-      VersionNumber: ${{ steps.bump.outputs.new_tag }}
-    
-  publishpackage:
-    name: Publish Package
-    needs: 
-      - release
-    uses: ./.github/workflows/publish-package.yml
+      - restore_build_test
+    uses: './.github/workflows/tag-and-create-release.yml'
     with:
-      dotnet-version: 8.0.x
-      package-version: ${{ needs.release.outputs.VersionNumber }}
-      project-name: ShotCaller.Azure.ServiceBus.Messaging
-      release-notes-url: https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}
+      release_type: ${{ inputs.release_type }}
+      dotnet-version: ${{ inputs.dotnet_version }}
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: write
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v4
+#
+#      - name: Bump version and push tag
+#        id: bump
+#        uses: anothrNick/github-tag-action@v1
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          WITH_V: false
+#          DEFAULT_BRANCH: main
+#          DEFAULT_BUMP: ${{ inputs.release_type }}
+#
+#      - name: Generate release notes with Release Drafter
+#        id: generate_release_notes
+#        uses: release-drafter/release-drafter@v6
+#        with:
+#          tag: ${{ steps.bump.outputs.new_tag }}
+#          version: ${{ steps.bump.outputs.new_tag }}
+#          config-name: release-drafter.yml
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#
+#      - name: Create Release
+#        uses: ncipollo/release-action@v1
+#        with:
+#          generateReleaseNotes: false
+#          tag: ${{ steps.bump.outputs.new_tag }}
+#          body: ${{ steps.generate_release_notes.outputs.body }}
+#    outputs:
+#      VersionNumber: ${{ steps.bump.outputs.new_tag }}
+    
+#  publishpackage:
+#    name: Publish Package
+#    needs: 
+#      - release
+#    uses: ./.github/workflows/publish-package.yml
+#    with:
+#      dotnet-version: 8.0.x
+#      package-version: ${{ needs.release.outputs.VersionNumber }}
+#      project-name: ShotCaller.Azure.ServiceBus.Messaging
+#      release-notes-url: https://github.com/Cheranga/shotcaller/releases/tag/${{ needs.release.outputs.VersionNumber }}

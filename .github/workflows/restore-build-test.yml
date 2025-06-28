@@ -1,4 +1,4 @@
-name: ci-restore-build-test
+name: restore-build-test
 
 on:
   workflow_call:

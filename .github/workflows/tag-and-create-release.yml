@@ -1,0 +1,55 @@
+name: tag-and-create-release
+
+on:
+  workflow_call:
+    inputs:
+      release_type:
+        type: string
+        description: 'Release type'
+        required: true      
+      dotnet-version:
+        type: string
+        required: true
+        description: Version of .NET to use (e.g., 8.0.x)
+    secrets:
+      GITHUB_NUGET_TOKEN:
+        required: true
+        
+permissions:
+  contents: write
+  
+jobs:
+  bump_version_and_generate_release_notes:
+    name: Bump Version and Generate Release Notes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Bump version and push tag
+        id: bump
+        uses: anothrNick/github-tag-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_NUGET_TOKEN }}
+          WITH_V: false
+          DEFAULT_BRANCH: main
+          DEFAULT_BUMP: ${{ inputs.release_type }}
+          
+      - name: Generate release notes with Release Drafter
+        id: generate_release_notes
+        uses: release-drafter/release-drafter@v6
+        with:
+          tag: ${{ steps.bump.outputs.new_tag }}
+          version: ${{ steps.bump.outputs.new_tag }}
+          config-name: release-drafter.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_NUGET_TOKEN }}  
+            
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          generateReleaseNotes: false
+          tag: ${{ steps.bump.outputs.new_tag }}
+          body: ${{ steps.generate_release_notes.outputs.body }}
+    outputs:
+      VersionNumber: ${{ steps.bump.outputs.new_tag }}            

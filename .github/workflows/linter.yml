@@ -1,4 +1,4 @@
-name: ci-linter
+name: linter
 
 on:
   workflow_call:
