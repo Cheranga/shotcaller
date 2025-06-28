@@ -159,3 +159,7 @@ _ = operation.Result switch
 
 ```
 
+## :innocent: Icons
+Icons are from [Juicy Fish](https://www.flaticon.com/free-icons/target)
+
+
