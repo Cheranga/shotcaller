@@ -14,6 +14,7 @@
         <Authors>Cheranga Hatangala</Authors>
         <PackageProjectUrl>https://github.com/Cheranga/shotcaller</PackageProjectUrl>
         <RepositoryUrl>https://github.com/Cheranga/shotcaller</RepositoryUrl>
+        <PackageIcon>shotcaller.png</PackageIcon>
         <Version />
     </PropertyGroup>
 
@@ -26,6 +27,11 @@
         <PackageReference Include="Microsoft.Extensions.Azure"/>
         <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations"/>
     </ItemGroup>
+
+    <ItemGroup>
+        <None Include="shotcaller.png" Pack="true" PackagePath="\"/>
+    </ItemGroup>
+
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

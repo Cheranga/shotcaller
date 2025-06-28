@@ -1,5 +1,5 @@
 ﻿<div align="center">
-<img src="target.png" alt="ShotCaller" width="150px"/>
+<img src="shotcaller.png" alt="ShotCaller" width="150px"/>
 
 # ShotCaller
 
