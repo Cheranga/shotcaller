@@ -58,7 +58,7 @@ jobs:
   coveragereport:
     needs: restore_build_test
     runs-on: ubuntu-latest
-    permissions: 
+    permissions:
       contents: read
     steps:
       - name: Download all coverage artifacts
@@ -80,13 +80,12 @@ jobs:
         with:
           name: CoverageReport
           path: coveragereport
-          
+
       - name: Get coverage info
         id: coverage
         run: |
-          COVERAGE=$(cat coveragereport/badge_linecoverage.txt)
-          # Remove the % symbol from the coverage value
-          COVERAGE_PCT=${COVERAGE//%/}
+          COVERAGE=$(grep -oP 'line-rate="\K[0-9.]+' coveragereport/Cobertura.xml)
+          COVERAGE_PCT=$(echo "scale=1; ${COVERAGE} * 100" | bc)
           if (( $(echo "$COVERAGE_PCT >= 90" | bc -l) )); then
             COLOR=brightgreen
           elif (( $(echo "$COVERAGE_PCT >= 80" | bc -l) )); then
@@ -100,6 +99,7 @@ jobs:
           fi
           echo "COVERAGE=$COVERAGE_PCT" >> $GITHUB_ENV
           echo "COVERAGE_COLOR=$COLOR" >> $GITHUB_ENV
+
 
       - name: Create coverage badge
         uses: schneegans/dynamic-badges-action@v1.7.0
