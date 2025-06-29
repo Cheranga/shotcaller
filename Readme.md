@@ -36,20 +36,69 @@ them throughout your application without needing to worry about the underlying d
 
 :point_right: Typed and named message publishers for a given message type.
 
+This allows you to define your message types and their destinations easily, 
+and use them throughout your application without needing to worry about the 
+underlying details of the Azure Service Bus.
+
 :point_right: Support for multiple Azure Service Bus namespaces.
 
-:point_right: Support using connection strings or any `TokenCredential` implementation to authenticate with 
+When you have multiple Azure Service Bus namespaces, you can register publishers for each namespace
+
+:point_right: Totally upto the user how the connection to the service bus should be handled
+
+The library does not dictate how you would like to connect to the Azure Service Bus.
+
+Whether you want to use a connection string, managed identity, or any other method, is totally up to you.
+
+When you're configuring a publisher set the `GetServiceBusClientFunc` on how you want to connect to the 
 Azure Service Bus.
 
 :point_right: Dependency injection support for easy registration and usage of publishers.
 
+Using `Microsoft.Extensions.DependencyInjection`, you can easily register your publishers 
+or the `IServiceBusFactory` to get the publishers.
+
 :point_right: Discriminated union types for handling message publication results, allowing you to easily handle success and failure
 cases.
+
+The operations are always returned with `OperationResponse` type which is a discriminated union type.
+Using it's `Result` property which is of type `OperationResult`, 
+you can decide how to handle the result of the message publication.
+
+If it was a success, you can log the success or do any other operation you want.
+
+If it was a failure, whether to throw an exception or just log the error is totally up to you.
 
 :point_right: Support for configuring publishers with options such as the destination queue or topic, message options,
 serialization options, and more.
 
+If you need more fine-grained control over the message publication, 
+you can configure the publishers with options.
+
+See example below on how to configure the publisher when the destination is session enabled
+
+```csharp
+var services = new ServiceCollection().AddLogging().RegisterServiceBus();
+
+services
+    .RegisterServiceBusPublisher<CreateOrderMessage>()
+    .Configure(config =>
+    {
+        config.GetServiceBusClientFunc = () =>
+            new ServiceBusClient("[CONNECTION STRING]");
+        config.PublishTo = SessionOrdersQueue;
+        config.SerializerOptions = _serializerOptions;
+        // Configure the message options for session enabled queue
+        config.MessageOptions = (message, busMessage) => busMessage.SessionId = message.SessionId;
+    });
+
+
+```
+
 :point_right: Ability to publish messages as batches
+
+This is the default behavior of the library.
+When you publish messages, they are automatically batched together and sent to the Azure Service Bus.
 
 ## :runner: Getting Started
 

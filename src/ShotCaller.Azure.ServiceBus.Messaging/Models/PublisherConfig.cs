@@ -38,10 +38,4 @@ public sealed record PublisherConfig<TMessage>
     /// This can be used to set message properties, session ID, or other message-specific settings.
     /// </summary>
     public Action<TMessage, ServiceBusMessage>? MessageOptions { get; set; }
-
-    /// <summary>
-    /// Gets or sets the options for configuring the ServiceBusClient.
-    /// If not specified, default client options will be used.
-    /// </summary>
-    public ServiceBusClientOptions? ServiceBusClientOptions { get; set; }
 }
